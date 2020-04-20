@@ -17,7 +17,7 @@ enum HandlerType {
 
 ///
 class Handler {
-  Handler({this.type = HandlerType.route, this.handlerFunc});
+  const Handler({this.type = HandlerType.route, this.handlerFunc});
   final HandlerType type;
   final HandlerFunc handlerFunc;
 }
