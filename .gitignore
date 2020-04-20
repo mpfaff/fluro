@@ -11,3 +11,6 @@ coverage
 __temp_coverage*
 .dart_tool/
 build/
+
+# iOS
+**/flutter_export_environment.sh
