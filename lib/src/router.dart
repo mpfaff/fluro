@@ -38,16 +38,16 @@ class Router {
     return _routeTree.matchRoute(path);
   }
 
-  void pop(BuildContext context) => Navigator.pop(context);
+  void pop(GlobalKey<NavigatorState> key) => key.currentState.pop();
 
   ///
-  Future navigateTo(BuildContext context, String path,
+  Future navigateTo(GlobalKey<NavigatorState> key, String path,
       {bool replace = false,
       bool clearStack = false,
       TransitionType transition,
       Duration transitionDuration = const Duration(milliseconds: 250),
       RouteTransitionsBuilder transitionBuilder}) {
-    RouteMatch routeMatch = matchRoute(context, path,
+    RouteMatch routeMatch = matchRoute(key.currentContext, path,
         transitionType: transition,
         transitionsBuilder: transitionBuilder,
         transitionDuration: transitionDuration);
@@ -58,16 +58,16 @@ class Router {
       completer.complete("Non visual route type.");
     } else {
       if (route == null && notFoundHandler != null) {
-        route = _notFoundRoute(context, path);
+        route = _notFoundRoute(path);
       }
       if (route != null) {
         if (clearStack) {
           future =
-              Navigator.pushAndRemoveUntil(context, route, (check) => false);
+              key.currentState.pushAndRemoveUntil(route, (check) => false);
         } else {
           future = replace
-              ? Navigator.pushReplacement(context, route)
-              : Navigator.push(context, route);
+              ? key.currentState.pushReplacement(route)
+              : key.currentState.push(route);
         }
         completer.complete();
       } else {
@@ -81,7 +81,7 @@ class Router {
   }
 
   ///
-  Route<Null> _notFoundRoute(BuildContext context, String path) {
+  Route<Null> _notFoundRoute(String path) {
     RouteCreator<Null> creator =
         (RouteSettings routeSettings, Map<String, List<String>> parameters) {
       return MaterialPageRoute<Null>(

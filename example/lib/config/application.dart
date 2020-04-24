@@ -7,7 +7,10 @@
  * See LICENSE for distribution and usage details.
  */
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
 
 class Application {
   static Router router;
+
+  static GlobalKey<NavigatorState> routerKey = GlobalKey<NavigatorState>();
 }
